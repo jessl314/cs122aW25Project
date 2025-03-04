@@ -6,5 +6,5 @@ db = mysql.connector.connect(
     user="root",
     passwd="root"
 )
-
+#tedt
 mycursor = db.cursor()
