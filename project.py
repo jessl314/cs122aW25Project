@@ -8,3 +8,5 @@ db = mysql.connector.connect(
 )
 
 mycursor = db.cursor()
+
+# hi
