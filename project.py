@@ -1,7 +1,6 @@
 # import sys
 import mysql.connector
-#testing
-#test
+
 db = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -9,3 +8,5 @@ db = mysql.connector.connect(
 )
 
 mycursor = db.cursor()
+
+
