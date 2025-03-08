@@ -9,5 +9,3 @@ db = mysql.connector.connect(
 
 #testing
 mycursor = db.cursor()
-
-# hi
