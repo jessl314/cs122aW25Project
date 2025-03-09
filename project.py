@@ -1,10 +1,10 @@
 # import sys
 import sys
-import importdata as id
+import importdata as i
 
 def handle_import(folder_name):
     """Handle the 'import' command."""
-    success = id.import_data(folder_name)
+    success = i.import_data(folder_name)
     if success:
         print("Data imported successfully.")
     else:

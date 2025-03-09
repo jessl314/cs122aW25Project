@@ -221,11 +221,11 @@ def import_data(folder_name):
         if not os.path.exists(folder_path):
             print(f"Folder not found: {folder_path}")
             return False
-        for csv_file in os.listdir(folder_name):
+        for csv_file in os.listdir(folder_path):
             if csv_file.endswith('.csv'):
                 table_name = csv_file.replace(".csv", "")
                 
-                file_path = os.path.join(folder_name, csv_file)
+                file_path = os.path.join(folder_name, "test_data", csv_file)
                 if not os.path.exists(file_path):
                     print(f"File not found: {file_path}")
                     return False
