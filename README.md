@@ -20,9 +20,10 @@ CREATE USER 'jessica'@'%' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON cs122a.* TO 'jessica'@'%';
 FLUSH PRIVILEGES;
 
+run this in a query in mysql
 
-
-
+SET GLOBAL local_infile = 1;
+SHOW VARIABLES LIKE 'local_infile'; // to check
 
 
 AT THE END: change all permissions or whatever to reflect the stuff given in the instructions and hope nothing gets messed up 
