@@ -28,13 +28,13 @@ def create_connection():
         return None
 
 def create_tables():
-    """executting the DDL statements to create the tables. returns True if this was successful, False otherwise"""
+    """executing the DDL statements to create the tables. returns True if this was successful, False otherwise"""
     connection = create_connection()
     if not connection:
         return False
     cursor = connection.cursor()
 
-    create_users_table = """ 
+    create_users_table = """
     CREATE TABLE IF NOT EXISTS users (
     uid INT,
     email TEXT NOT NULL,
@@ -152,13 +152,10 @@ def create_tables():
         connection.close()
     return True
 
-import os
-
 def load_data_from_csv(file_path, table_name):
     """Loads data from file_path specified into the correct table."""
-    
     # Convert to absolute path and replace `\` with `/` for MySQL compatibility
-    absolute_path = os.path.abspath(file_path).replace("\\", "/")  
+    absolute_path = os.path.abspath(file_path).replace("\\", "/")
 
     print(f"Attempting to load {absolute_path} into {table_name}")  # Debugging
 
@@ -172,8 +169,8 @@ def load_data_from_csv(file_path, table_name):
         cursor.execute("SET FOREIGN_KEY_CHECKS=0;")
 
         load_query = f"""
-        LOAD DATA LOCAL INFILE '{absolute_path}' 
-        INTO TABLE {table_name} 
+        LOAD DATA LOCAL INFILE '{absolute_path}'
+        INTO TABLE {table_name}
         FIELDS TERMINATED BY ',' 
         LINES TERMINATED BY '\n' 
         IGNORE 1 ROWS;
@@ -198,7 +195,7 @@ def load_data_from_csv(file_path, table_name):
         connection.commit()
         cursor.close()
         connection.close()
-    
+   
     return True
 
 def reset_database():
@@ -222,8 +219,6 @@ def reset_database():
 
 # folder name is the argument test_data for the import statement
 #CHANGE noted below, actually maybe ask ED, maybe not?
-#import os
-import os
 
 def import_data(folder_name):
     """
