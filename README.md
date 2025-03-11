@@ -25,5 +25,7 @@ run this in a query in mysql
 SET GLOBAL local_infile = 1;
 SHOW VARIABLES LIKE 'local_infile'; // to check
 
+I'm thinking that we just have our own files that we edit so like mine is labeled task3 rn
+
 
 AT THE END: change all permissions or whatever to reflect the stuff given in the instructions and hope nothing gets messed up 
