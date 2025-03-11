@@ -43,9 +43,9 @@ def delete_viewer(uid):
     if not connection:
         return False
     cursor = connection.cursor()
-    delete_query = "DELETE FROM viewers V WHERE V.uid = %s "
+    delete_query = "DELETE FROM viewers WHERE uid = %s"
 
-    values = (uid)
+    values = (uid,)
     try:
         cursor.execute(delete_query, values)
         connection.commit()
