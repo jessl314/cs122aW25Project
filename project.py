@@ -1,16 +1,13 @@
 import sys
 import importdata as i
+import task3 as t
 
-def handle_import(folder_name):
-    """Handle the 'import' command."""
-    success = i.import_data(folder_name)
+def check_success(success, msg1, msg2):
+    """prints message based on whether a function succeeded or not"""
     if success:
-        print("Data imported successfully.")
+        print(msg1)
     else:
-        print("Failed to import data.")
-
-# def handle_command(function_name, *args):
-#     try
+        print(msg2)
 
 def main():
     """
@@ -23,8 +20,13 @@ def main():
     command = sys.argv[1]
     if command == 'import' and len(sys.argv) == 3:
         folder_name = sys.argv[2]
-        handle_import(folder_name)
-   # elif command
-   
+        success = i.import_data(folder_name)
+        check_success(success, "Data imported successfully.", "Failed to import data.")
+    elif command == "addGenre" and len(sys.argv) == 4:
+        uid = sys.argv[2]
+        genre = sys.argv[3]
+        success = t.add_genre(uid, genre)
+        check_success(success, "genre added successfully", "failed to add genre")
+
 if __name__ == "__main__":
     main()
