@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 # QUESTION: is it ok to lower all table names
 # NOTE: make sure to change the database name to cs122a before submission
+# TODO: change the load data function to use INSERT INTO?????? ugghgghghghhghghghghhghgh based on
+# ed post that states LOAD DATA thing is for local testing which is kinda evil LOL
 
 load_dotenv()
 
