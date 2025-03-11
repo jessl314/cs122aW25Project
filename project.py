@@ -27,6 +27,10 @@ def main():
         genre = sys.argv[3]
         success = t.add_genre(uid, genre)
         check_success(success, "genre added successfully", "failed to add genre")
+    elif command == "deleteViewer" and len(sys.argv) == 3:
+        uid = sys.argv[2]
+        success = t.delete_viewer(uid)
+        check_success(success, "viewer deleted successfully", "failed to delete viewer")
 
 if __name__ == "__main__":
     main()

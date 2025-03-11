@@ -38,6 +38,7 @@ def delete_viewer(uid):
     Given a Viewer uid, delete the Viewer from the appropriate table(s). Input:
     python3 project.py deleteViewer [uid:int]
     EXAMPLE: python3 project.py deleteViewer 1
+    WORKS
     """
     connection = i.create_connection()
     if not connection:
@@ -48,6 +49,9 @@ def delete_viewer(uid):
     values = (uid,)
     try:
         cursor.execute(delete_query, values)
+        if cursor.rowcount == 0:
+            print(f"No viewer found with uid {uid}. No rows were deleted.")
+            return False
         connection.commit()
         print(f"viewer with uid {uid} deleted successfully from the viewers table")
         return True
@@ -57,4 +61,3 @@ def delete_viewer(uid):
     finally:
         cursor.close()
         connection.close()
-
