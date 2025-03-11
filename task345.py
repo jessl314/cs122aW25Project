@@ -95,5 +95,3 @@ def insert_movie(rid, website_url):
     finally:
         cursor.close()
         connection.close()
-
-
