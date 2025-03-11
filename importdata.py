@@ -1,4 +1,5 @@
 import os
+import csv
 import mysql.connector
 from dotenv import load_dotenv
 
@@ -28,13 +29,13 @@ def create_connection():
         return None
 
 def create_tables():
-    """executting the DDL statements to create the tables. returns True if this was successful, False otherwise"""
+    """executing the DDL statements to create the tables. returns True if this was successful, False otherwise"""
     connection = create_connection()
     if not connection:
         return False
     cursor = connection.cursor()
 
-    create_users_table = """ 
+    create_users_table = """
     CREATE TABLE IF NOT EXISTS users (
     uid INT,
     email TEXT NOT NULL,
@@ -152,13 +153,10 @@ def create_tables():
         connection.close()
     return True
 
-import os
-
 def load_data_from_csv(file_path, table_name):
     """Loads data from file_path specified into the correct table."""
-    
     # Convert to absolute path and replace `\` with `/` for MySQL compatibility
-    absolute_path = os.path.abspath(file_path).replace("\\", "/")  
+    absolute_path = os.path.abspath(file_path).replace("\\", "/")
 
     print(f"Attempting to load {absolute_path} into {table_name}")  # Debugging
 
@@ -168,29 +166,27 @@ def load_data_from_csv(file_path, table_name):
     cursor = connection.cursor()
 
     try:
-        # Disable foreign key checks temporarily
-        cursor.execute("SET FOREIGN_KEY_CHECKS=0;")
 
-        load_query = f"""
-        LOAD DATA LOCAL INFILE '{absolute_path}' 
-        INTO TABLE {table_name} 
-        FIELDS TERMINATED BY ',' 
-        LINES TERMINATED BY '\n' 
-        IGNORE 1 ROWS;
-        """
-
-        cursor.execute(load_query)
-
-        # Re-enable foreign key checks
-        cursor.execute("SET FOREIGN_KEY_CHECKS=1;")
-
-        print(f"Data from {absolute_path} loaded into {table_name}")
+        cursor.execute("SET FOREIGN_KEY_CHECKS=0")
+        with open(absolute_path, mode='r', encoding='utf-8') as file:
+            csv_reader = csv.reader(file)
+            headers = next(csv_reader, None)
+            if not headers:
+                print("CSV file is empty")
+                return False
+            placeholders = ','.join(['%s'] * len(headers))
+            insert_query = f"INSERT INTO {table_name} ({','.join(headers)}) VALUES ({placeholders})"
+            for row in csv_reader:
+                if any(row):
+                    cursor.execute(insert_query, row)
+            connection.commit()
+        cursor.execute("SET FOREIGN_KEY_CHECKS=1")
 
         # Check how many rows were inserted
         cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
         row_count = cursor.fetchone()[0]
         print(f"✅ {row_count} rows now exist in {table_name}.")
-
+        
     except mysql.connector.Error as err:
         print(f"Error loading data: {err}")
         return False
@@ -198,7 +194,7 @@ def load_data_from_csv(file_path, table_name):
         connection.commit()
         cursor.close()
         connection.close()
-    
+  
     return True
 
 def reset_database():
@@ -222,8 +218,6 @@ def reset_database():
 
 # folder name is the argument test_data for the import statement
 #CHANGE noted below, actually maybe ask ED, maybe not?
-#import os
-import os
 
 def import_data(folder_name):
     """
