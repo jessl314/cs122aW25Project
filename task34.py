@@ -32,3 +32,29 @@ def add_genre(uid, genre):
         connection.close()
 
 # delete viewer : DELETE FROM viewer V WHERE V.uid = {uid}
+
+def delete_viewer(uid):
+    """
+    Given a Viewer uid, delete the Viewer from the appropriate table(s). Input:
+    python3 project.py deleteViewer [uid:int]
+    EXAMPLE: python3 project.py deleteViewer 1
+    """
+    connection = i.create_connection()
+    if not connection:
+        return False
+    cursor = connection.cursor()
+    delete_query = "DELETE FROM viewers V WHERE V.uid = %s "
+
+    values = (uid)
+    try:
+        cursor.execute(delete_query, values)
+        connection.commit()
+        print(f"viewer with uid {uid} deleted successfully from the viewers table")
+        return True
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
+    finally:
+        cursor.close()
+        connection.close()
+
