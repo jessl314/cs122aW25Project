@@ -1,12 +1,10 @@
 import os
+import csv
 import mysql.connector
 from dotenv import load_dotenv
-import csv
 
 # QUESTION: is it ok to lower all table names
 # NOTE: make sure to change the database name to cs122a before submission
-# TODO: change the load data function to use INSERT INTO?????? ugghgghghghhghghghghhghgh based on
-# ed post that states LOAD DATA thing is for local testing which is kinda evil LOL
 
 load_dotenv()
 
@@ -168,6 +166,7 @@ def load_data_from_csv(file_path, table_name):
     cursor = connection.cursor()
 
     try:
+
         cursor.execute("SET FOREIGN_KEY_CHECKS=0")
         with open(absolute_path, mode='r', encoding='utf-8') as file:
             csv_reader = csv.reader(file)
@@ -182,10 +181,12 @@ def load_data_from_csv(file_path, table_name):
                     cursor.execute(insert_query, row)
             connection.commit()
         cursor.execute("SET FOREIGN_KEY_CHECKS=1")
+
         # Check how many rows were inserted
         cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
         row_count = cursor.fetchone()[0]
         print(f"✅ {row_count} rows now exist in {table_name}.")
+        
     except mysql.connector.Error as err:
         print(f"Error loading data: {err}")
         return False
@@ -193,7 +194,7 @@ def load_data_from_csv(file_path, table_name):
         connection.commit()
         cursor.close()
         connection.close()
-   
+  
     return True
 
 def reset_database():

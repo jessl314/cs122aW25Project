@@ -61,3 +61,39 @@ def delete_viewer(uid):
     finally:
         cursor.close()
         connection.close()
+
+
+
+def insert_movie(rid, website_url):
+    """
+    python3 project.py insertMovie [rid:int] [website_url:str]
+
+    EXAMPLE: python3 project.py insertMovie 1 top-gun.com
+    """
+    connection = i.create_connection()
+    if not connection:
+        return False
+    cursor = connection.cursor()
+    insert_query = """
+    INSERT INTO movies (rid, website_url)
+    SELECT %s, %s
+    FROM releases r
+    WHERE r.rid = %s 
+    ON DUPLICATE KEY UPDATE website_url = VALUES(website_url)"""
+    values = (rid, website_url, rid)
+    try:
+        cursor.execute(insert_query, values)
+        if cursor.rowcount == 0:
+            print(f"corresponding rid {rid} not found in release. No rows were deleted.")
+            return False
+        connection.commit()
+        print(f"movie url {website_url} successfully added for rid {rid}")
+        return True
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
+    finally:
+        cursor.close()
+        connection.close()
+
+
