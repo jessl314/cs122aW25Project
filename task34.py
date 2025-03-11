@@ -31,3 +31,4 @@ def add_genre(uid, genre):
         cursor.close()
         connection.close()
 
+# delete viewer : DELETE FROM viewer V WHERE V.uid = {uid}

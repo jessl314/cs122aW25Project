@@ -1,6 +1,8 @@
 # cs122aW25Project
 
 
+MEMBERS: Jessica Liao, Xingyu (Betty) Li, Amratha Rao
+
 THINGS TO DO:
 
 everyone:
