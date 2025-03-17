@@ -103,7 +103,7 @@ def create_tables():
     );
     """
     create_sessions_table = """
-    CREATE TABLE Sessions (
+    CREATE TABLE sessions (
         sid INT,
         uid INT NOT NULL,
         rid INT NOT NULL,
@@ -118,7 +118,7 @@ def create_tables():
     );
     """
     create_reviews_table = """
-    CREATE TABLE Reviews (
+    CREATE TABLE reviews (
     rvid INT,
     uid INT NOT NULL,
     rid INT NOT NULL,
