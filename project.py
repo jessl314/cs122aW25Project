@@ -2,7 +2,6 @@ import sys
 import importdata as i
 import task345 as t
 
-# TODO: think about edge cases, like what if a negative integer is put 
 
 def check_success(success, msg1, msg2):
     """prints message based on whether a function succeeded or not"""

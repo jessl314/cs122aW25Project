@@ -1,7 +1,6 @@
 import mysql.connector
 import importdata as i
 
-# TODO: replace all print statements with success or failure
 
 def add_genre(uid, genre):
     """
@@ -16,7 +15,7 @@ def add_genre(uid, genre):
         genre = None
 
     if uid == 'NULL':
-        print("❌ Error: rid cannot be NULL.")
+        print("Fail")
         return False
     
     connection = i.create_connection()
@@ -29,7 +28,7 @@ def add_genre(uid, genre):
     result = cursor.fetchone()
 
     if result is None:
-        print(f"Error: No user found with uid {uid}")
+        print("Fail")
         cursor.close()
         connection.close()
         return False
@@ -52,10 +51,10 @@ def add_genre(uid, genre):
     try:
         cursor.execute(update_query, (updated_genres, uid))
         connection.commit()
-        print(f"genre {genre} updated successfully for uid {uid}")
+        print("Success")
         return True
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
+    except mysql.connector.Error:
+        print("Fail")
         return False
     finally:
         cursor.close()
@@ -71,11 +70,12 @@ def delete_viewer(uid):
     WORKS
     """
     if uid == 'NULL':
-        print("❌ Error: uid cannot be NULL.")
+        print("Fail")
         return False
     
     connection = i.create_connection()
     if not connection:
+        print("Fail")
         return False
     cursor = connection.cursor()
 
@@ -84,7 +84,7 @@ def delete_viewer(uid):
     result = cursor.fetchone()
 
     if result is None:
-        print(f"Error: No user found with uid {uid}")
+        print("Fail")
         cursor.close()
         connection.close()
         return False
@@ -95,13 +95,13 @@ def delete_viewer(uid):
     try:
         cursor.execute(delete_query, values)
         if cursor.rowcount == 0:
-            print(f"No viewer found with uid {uid}. No rows were deleted.")
+            print("Fail")
             return False
         connection.commit()
-        print(f"viewer with uid {uid} deleted successfully from the viewers table")
+        print("Success")
         return True
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
+    except mysql.connector.Error:
+        print("Fail")
         return False
     finally:
         cursor.close()
@@ -118,11 +118,12 @@ def insert_movie(rid, website_url):
     if website_url == 'NULL':
         website_url = None
     if rid == 'NULL':
-        print("❌ Error: rid cannot be NULL.")
+        print("Fail")
         return False
     
     connection = i.create_connection()
     if not connection:
+        print("Fail")
         return False
     cursor = connection.cursor()
 
@@ -131,7 +132,7 @@ def insert_movie(rid, website_url):
     result = cursor.fetchone()
 
     if result[0] == 0:
-        print(f"❌ Error: Release with rid {rid} does not exist.")
+        print("Fail")
         return False
     
     insert_query = """
@@ -142,10 +143,10 @@ def insert_movie(rid, website_url):
     try:
         cursor.execute(insert_query, (rid, website_url))
         connection.commit()
-        print(f"movie url {website_url} successfully added for rid {rid}")
+        print("Success")
         return True
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
+    except mysql.connector.Error:
+        print("Fail")
         return False
     finally:
         cursor.close()
