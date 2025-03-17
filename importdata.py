@@ -6,20 +6,18 @@ import mysql.connector
 
 # load_dotenv()
 
-DB_HOST = 'localhost'
-DB_USER = 'test'
-DB_PASSWORD = 'password'
-DB_NAME = 'cs122a'
+# DB_HOST = 'localhost'
+# DB_USER = 'test'
+# DB_PASSWORD = 'password'
+# DB_NAME = 'cs122a'
 
 def create_connection():
     """ creates the database connection using .env or default credentials"""
     try:
         connection = mysql.connector.connect(
-            host=DB_HOST,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            database=DB_NAME,
-            allow_local_infile=True
+            user='test',
+            password='password',
+            database='cs122a',
         )
         return connection
     except mysql.connector.Error as err:
@@ -183,10 +181,10 @@ def load_data_from_csv(file_path, table_name):
             connection.commit()
         cursor.execute("SET FOREIGN_KEY_CHECKS=1")
 
-        # Check how many rows were inserted
-        cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
-        row_count = cursor.fetchone()[0]
-        print(f"✅ {row_count} rows now exist in {table_name}.")
+        # # Check how many rows were inserted
+        # cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
+        # row_count = cursor.fetchone()[0]
+        # # print(f"✅ {row_count} rows now exist in {table_name}.")
         
     except mysql.connector.Error:
         print("Fail")
