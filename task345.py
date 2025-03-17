@@ -7,9 +7,6 @@ def add_genre(uid, genre):
     add genre to genres string of the user with uid in the users table
     python3 project.py addGenre [uid:int] [genre:str]
     EXAMPLE: python3 project.py addGenre 1 Comedy
-
-    WORKS: for appending a genre at least LOL
-    CHECK: adding a genre when genres is null
     """
     if genre is None or genre == "NULL" or genre == "":
         print("Fail")
@@ -39,7 +36,6 @@ def add_genre(uid, genre):
     if current_genres:
         genre_list = current_genres.split(';')
         if genre in genre_list:
-            # print(f"Genre '{genre}' already exists for user {uid}")
             updated_genres = current_genres
             print("Fail")
             return False
@@ -64,7 +60,6 @@ def add_genre(uid, genre):
         cursor.close()
         connection.close()
 
-# delete viewer : DELETE FROM viewer V WHERE V.uid = {uid}
 
 def delete_viewer(uid):
     """

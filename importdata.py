@@ -132,7 +132,6 @@ def create_tables():
         cursor.execute(create_videos_table)
         cursor.execute(create_sessions_table)
         cursor.execute(create_reviews_table)
-        # print("Tables created successfully.")
     except mysql.connector.Error:
         print("Fail")
         return False
@@ -144,11 +143,7 @@ def create_tables():
 
 def load_data_from_csv(file_path, table_name):
     """Loads data from file_path specified into the correct table."""
-    # Convert to absolute path and replace `\` with `/` for MySQL compatibility
     absolute_path = os.path.abspath(file_path).replace("\\", "/")
-
-    # print(f"Attempting to load {absolute_path} into {table_name}")  # Debugging
-
     connection = create_connection()
     if not connection:
         print("Fail")
@@ -192,7 +187,6 @@ def reset_database():
         cursor.execute("DROP DATABASE IF EXISTS cs122a;")
         cursor.execute("CREATE DATABASE cs122a")
         cursor.execute("USE cs122a")
-        # print("Database reset successfully")
     except mysql.connector.Error:
         print("Fail")
         return False
@@ -201,45 +195,31 @@ def reset_database():
         connection.close()
     return True
 
-# folder name is the argument test_data for the import statement
-#CHANGE noted below, actually maybe ask ED, maybe not?
-
 def import_data(folder_name):
     """
     Iterates through the correct test data folder and loads the CSV files into the database.
     """
-    # print(f"Checking folder: {folder_name}")  # Debugging
-
-    # Ensure the folder exists
     if not os.path.exists(folder_name):
         print("Fail")
         return False
-
-    # Fix: Select the correct `test_data/` folder
     correct_folder = folder_name
 
     if os.path.exists(os.path.join(folder_name, "movies.csv")):
-        # print(f"Using folder: {folder_name}")  # Debugging
         pass
     elif os.path.exists(os.path.join(folder_name, "test_data", "movies.csv")):
         correct_folder = os.path.join(folder_name, "test_data")
-        # print(f"Using nested folder: {correct_folder}")  # Debugging
     else:
         print("Fail")
         return False
 
-    # List files in the correct folder
     files = os.listdir(correct_folder)
-    # print(f"Files found in '{correct_folder}': {files}")  # Debugging
 
-    # Filter only valid CSV files (exclude hidden/macOS files)
     csv_files = [f for f in files if f.endswith('.csv') and not f.startswith('.')]
 
     if not csv_files:
         print("Fail")
         return False
 
-    # Ensure database is reset
     if not reset_database():
         print("Fail")
         return False
@@ -256,8 +236,6 @@ def import_data(folder_name):
     for csv_file in csv_files:
         file_path = os.path.join(correct_folder, csv_file)
         table_name = csv_file.replace(".csv", "")
-
-        # print(f"Processing file: {file_path} -> Table: {table_name}")  # Debugging
 
         success = load_data_from_csv(file_path, table_name)
         if not success:
