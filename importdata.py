@@ -1,15 +1,7 @@
 import os
 import csv
 import mysql.connector
-# from dotenv import load_dotenv
 
-
-# load_dotenv()
-
-# DB_HOST = 'localhost'
-# DB_USER = 'test'
-# DB_PASSWORD = 'password'
-# DB_NAME = 'cs122a'
 
 def create_connection():
     """ creates the database connection using .env or default credentials"""
@@ -148,7 +140,6 @@ def create_tables():
         connection.commit()
         cursor.close()
         connection.close()
-    print("Success")
     return True
 
 def load_data_from_csv(file_path, table_name):
@@ -171,7 +162,7 @@ def load_data_from_csv(file_path, table_name):
             csv_reader = csv.reader(file)
             headers = next(csv_reader, None)
             if not headers:
-                print("CSV file is empty")
+                print("Fail")
                 return False
             placeholders = ','.join(['%s'] * len(headers))
             insert_query = f"INSERT INTO {table_name} ({','.join(headers)}) VALUES ({placeholders})"
@@ -180,11 +171,6 @@ def load_data_from_csv(file_path, table_name):
                     cursor.execute(insert_query, row)
             connection.commit()
         cursor.execute("SET FOREIGN_KEY_CHECKS=1")
-
-        # # Check how many rows were inserted
-        # cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
-        # row_count = cursor.fetchone()[0]
-        # # print(f"✅ {row_count} rows now exist in {table_name}.")
         
     except mysql.connector.Error:
         print("Fail")
@@ -193,7 +179,6 @@ def load_data_from_csv(file_path, table_name):
         connection.commit()
         cursor.close()
         connection.close()
-    print("Success")
     return True
 
 def reset_database():
@@ -214,7 +199,6 @@ def reset_database():
     finally:
         cursor.close()
         connection.close()
-    print("Success")
     return True
 
 # folder name is the argument test_data for the import statement
@@ -235,7 +219,8 @@ def import_data(folder_name):
     correct_folder = folder_name
 
     if os.path.exists(os.path.join(folder_name, "movies.csv")):
-        print(f"Using folder: {folder_name}")  # Debugging
+        # print(f"Using folder: {folder_name}")  # Debugging
+        pass
     elif os.path.exists(os.path.join(folder_name, "test_data", "movies.csv")):
         correct_folder = os.path.join(folder_name, "test_data")
         # print(f"Using nested folder: {correct_folder}")  # Debugging
