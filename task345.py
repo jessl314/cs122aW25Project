@@ -11,8 +11,9 @@ def add_genre(uid, genre):
     WORKS: for appending a genre at least LOL
     CHECK: adding a genre when genres is null
     """
-    if genre == "NULL":
-        genre = None
+    if genre is None or genre == "NULL" or genre == "":
+        print("Fail")
+        return False
 
     if uid == 'NULL':
         print("Fail")
@@ -45,7 +46,7 @@ def add_genre(uid, genre):
         else:
             updated_genres = current_genres
     else:
-        updated_genres = genre if genre is not None else ""
+        updated_genres = genre if genre is not None else None
 
     update_query = "UPDATE users SET genres = %s  WHERE uid = %s"
 
