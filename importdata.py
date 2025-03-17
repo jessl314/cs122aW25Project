@@ -1,17 +1,15 @@
 import os
 import csv
 import mysql.connector
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-# QUESTION: is it ok to lower all table names
-# NOTE: make sure to change the database name to cs122a before submission
 
-load_dotenv()
+# load_dotenv()
 
-db_host = os.getenv('DB_HOST', 'localhost')
-db_user = os.getenv('DB_USER', 'root')
-db_password = os.getenv('DB_PASSWORD', '')
-db_name = os.getenv('DB_NAME', 'cs122a')
+db_host = 'localhost'
+db_user = 'test'
+db_password = 'password'
+db_name = 'cs122a'
 
 def create_connection():
     """ creates the database connection using .env or default credentials"""
