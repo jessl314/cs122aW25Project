@@ -1,5 +1,5 @@
 import mysql.connector
-import src.importdata as i
+import importdata as i
 
 
 def add_genre(uid, genre):
