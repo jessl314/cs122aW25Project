@@ -38,7 +38,7 @@ def add_genre(uid, genre):
     if current_genres:
         genre_list = current_genres.split(';')
         if genre in genre_list:
-            print(f"Genre '{genre}' already exists for user {uid}")
+            # print(f"Genre '{genre}' already exists for user {uid}")
             updated_genres = current_genres
         if genre is not None:
             updated_genres = current_genres + ";" + genre
