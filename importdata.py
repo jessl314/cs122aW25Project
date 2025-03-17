@@ -6,19 +6,19 @@ import mysql.connector
 
 # load_dotenv()
 
-db_host = 'localhost'
-db_user = 'test'
-db_password = 'password'
-db_name = 'cs122a'
+DB_HOST = 'localhost'
+DB_USER = 'test'
+DB_PASSWORD = 'password'
+DB_NAME = 'cs122a'
 
 def create_connection():
     """ creates the database connection using .env or default credentials"""
     try:
         connection = mysql.connector.connect(
-            host=db_host,
-            user=db_user,
-            password=db_password,
-            database=db_name,
+            host=DB_HOST,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            database=DB_NAME,
             allow_local_infile=True
         )
         return connection
