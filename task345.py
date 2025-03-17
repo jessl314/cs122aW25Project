@@ -15,7 +15,7 @@ def add_genre(uid, genre):
         genre = None
 
     if uid == 'NULL':
-        print("Fail a")
+        print("Fail")
         return False
     
     connection = i.create_connection()
@@ -28,7 +28,7 @@ def add_genre(uid, genre):
     result = cursor.fetchone()
 
     if result is None:
-        print("Fail b")
+        print("Fail")
         cursor.close()
         connection.close()
         return False
@@ -39,12 +39,13 @@ def add_genre(uid, genre):
         genre_list = current_genres.split(';')
         if genre in genre_list:
             print(f"Genre '{genre}' already exists for user {uid}")
+            updated_genres = current_genres
         if genre is not None:
             updated_genres = current_genres + ";" + genre
         else:
             updated_genres = current_genres
     else:
-        updated_genres = genre
+        updated_genres = genre if genre is not None else ""
 
     update_query = "UPDATE Users SET genres = %s  WHERE uid = %s"
 
@@ -54,7 +55,7 @@ def add_genre(uid, genre):
         print("Success")
         return True
     except mysql.connector.Error:
-        print("Fail c")
+        print("Fail")
         return False
     finally:
         cursor.close()
