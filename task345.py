@@ -15,7 +15,7 @@ def add_genre(uid, genre):
         genre = None
 
     if uid == 'NULL':
-        print("Fail a")
+        print("Fail")
         return False
     
     connection = i.create_connection()
@@ -28,7 +28,7 @@ def add_genre(uid, genre):
     result = cursor.fetchone()
 
     if result is None:
-        print("Fail b")
+        print("Fail")
         cursor.close()
         connection.close()
         return False
@@ -55,6 +55,7 @@ def add_genre(uid, genre):
         print("Success")
         return True
     except mysql.connector.Error:
+        print(f"Error: {err}")
         print("Fail")
         return False
     finally:
