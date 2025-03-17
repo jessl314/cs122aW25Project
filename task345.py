@@ -54,7 +54,7 @@ def add_genre(uid, genre):
         connection.commit()
         print("Success")
         return True
-    except mysql.connector.Error:
+    except mysql.connector.Error as err:
         print(f"Error: {err}")
         print("Fail")
         return False
