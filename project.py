@@ -1,6 +1,6 @@
 import sys
-import src.importdata as i
-import src.task345 as t
+import importdata as i
+import task345 as t
 
 
 def check_success(success, msg1, msg2):
