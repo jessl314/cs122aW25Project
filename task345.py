@@ -47,15 +47,14 @@ def add_genre(uid, genre):
     else:
         updated_genres = genre if genre is not None else ""
 
-    update_query = "UPDATE Users SET genres = %s  WHERE uid = %s"
+    update_query = "UPDATE users SET genres = %s  WHERE uid = %s"
 
     try:
         cursor.execute(update_query, (updated_genres, uid))
         connection.commit()
         print("Success")
         return True
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
+    except mysql.connector.Error:
         print("Fail")
         return False
     finally:
