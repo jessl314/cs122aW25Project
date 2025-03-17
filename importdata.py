@@ -132,7 +132,7 @@ def create_tables():
         cursor.execute(create_videos_table)
         cursor.execute(create_sessions_table)
         cursor.execute(create_reviews_table)
-        print("Tables created successfully.")
+        # print("Tables created successfully.")
     except mysql.connector.Error:
         print("Fail")
         return False
@@ -192,7 +192,7 @@ def reset_database():
         cursor.execute("DROP DATABASE IF EXISTS cs122a;")
         cursor.execute("CREATE DATABASE cs122a")
         cursor.execute("USE cs122a")
-        print("Database reset successfully")
+        # print("Database reset successfully")
     except mysql.connector.Error:
         print("Fail")
         return False
