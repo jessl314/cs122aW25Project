@@ -35,7 +35,7 @@ def create_connection():
         connection = mysql.connector.connect(
             user='test',
             password='password',
-            database='zotstreamingcs122a',
+            database='cs122a',
         )
         return connection
     except mysql.connector.Error as err:
