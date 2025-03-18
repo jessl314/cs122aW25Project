@@ -156,13 +156,13 @@ def video_viewed(rid):
         return False
     cursor = connection.cursor()
     insert_query = """
-        SELECT v.rid ,ep_num,title,length,COALESCE(COUNT(DISTINCT s.uid), 0) as viewers_count
+        SELECT v.rid ,v.ep_num,v.title,v.length,COALESCE(COUNT(DISTINCT vi.uid), 0) as viewers_count
         FROM videos v
-        LEFT JOIN releases s ON s.rid = v.rid
-        LEFT JOIN viewers vi ON vi.rid = s.rid
+        LEFT JOIN sessions s ON s.rid = v.rid
+        LEFT JOIN viewers vi ON vi.uid = s.uid
         WHERE v.rid = %s
-        GROUP BY v.rid
-        ORDER BY v.rid DESC;"""
+        GROUP BY v.rid, v.ep_num, v.title, v.length
+        ORDER BY viewers_count DESC;"""
     values = (rid, )
     try:
         cursor.execute(insert_query, values)

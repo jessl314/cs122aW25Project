@@ -43,8 +43,6 @@ def main():
     elif command == "videosViewed" and len(sys.argv) == 3:
         #python project.py videosViewed 123
         b.video_viewed(sys.argv[2])
-    
-
 
 if __name__ == "__main__":
     main()
