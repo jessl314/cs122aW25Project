@@ -38,10 +38,8 @@ def top_release(number):
     try:
         cursor.execute(query, (number,))
         results = cursor.fetchall()
-        print("Popular Releases:")
-        print("Release ID\tTitle\tReview Count")
         for row in results:
-            print(row[0],"\t", row[1],"\t", row[2])
+            print(",".join(map(str, row)))
         return True
     except mysql.connector.Error:
         print("Fail")
@@ -85,11 +83,8 @@ def find_release(sid):
         if not result:
             print("Fail")
             return False
-        print("Release information:")
-        print("rid, release_title, genre, video_title, ep_num, length")
         for row in result:
-            print(row)
-        print("Success")
+            print(",".join(map(str, row)))
         return True
     except mysql.connector.Error:
         print("Fail")
@@ -131,11 +126,8 @@ def find_viewers(times, start_date, end_date):
         if not result:
             print("Fail")
             return False
-        print("Viewers information:")
-        print("UID, first name, last name")
         for row in result:
-            print(row)
-        print("Success")
+            print(",".join(map(str, row)))
         return True
     except mysql.connector.Error:
         print("Fail")
@@ -175,11 +167,8 @@ def video_viewed(rid):
         if not result:
             print("Fail")
             return False
-        print("Video information:")
-        print("RID,ep_num,title,length, viewers_count")
         for row in result:
-            print(row)
-        print("Success")
+            print(",".join(map(str, row)))
         return True
     except mysql.connector.Error:
         print("Fail")
