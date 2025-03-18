@@ -58,7 +58,7 @@ def main():
             print("Error: " +e)
         check_success(success, "successfully shown active viewers", "fail to find active viewers")
     elif command == "videosViewed" and len(sys.argv) == 3:
-        #python project.py videosViewed 123
+        #python project.py videosViewed 5
         success = b.video_viewed(sys.argv[2])
         check_success(success, "successfully find video information", "fail to find video viewed info")
 
