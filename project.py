@@ -37,7 +37,7 @@ def main():
         try:
             times = int(sys.argv[2])
             b.find_viewers(times, sys.argv[3], sys.argv[4])
-        except ValueError as e:
+        except ValueError:
             print("Fail")
             return False
     elif command == "videosViewed" and len(sys.argv) == 3:
