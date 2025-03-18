@@ -2,6 +2,32 @@ import os
 import csv
 import mysql.connector
 
+from dotenv import load_dotenv
+
+# QUESTION: is it ok to lower all table names
+# NOTE: make sure to change the database name to cs122a before submission
+
+# load_dotenv()
+#
+# db_host = os.getenv('DB_HOST', 'localhost')
+# db_user = os.getenv('DB_USER', 'root')
+# db_password = os.getenv('DB_PASSWORD', '')
+# db_name = os.getenv('DB_NAME', 'cs122a')
+#
+# def create_connection():
+#     """ creates the database connection using .env or default credentials"""
+#     try:
+#         connection = mysql.connector.connect(
+#             host=db_host,
+#             user=db_user,
+#             password=db_password,
+#             database=db_name,
+#             allow_local_infile=True
+#         )
+#         return connection
+#     except mysql.connector.Error as err:
+#         print(f"Error: {err}")
+#         return None
 
 def create_connection():
     """ creates the database connection using .env or default credentials"""
@@ -9,7 +35,7 @@ def create_connection():
         connection = mysql.connector.connect(
             user='test',
             password='password',
-            database='cs122a',
+            database='zotstreamingcs122a',
         )
         return connection
     except mysql.connector.Error as err:

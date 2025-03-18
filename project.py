@@ -3,6 +3,7 @@ import importdata as i
 import task345 as t
 import last_tasks as b
 
+#het hi
 
 def main():
     """
@@ -44,5 +45,6 @@ def main():
         #python project.py videosViewed 123
         b.video_viewed(sys.argv[2])
 
+#akl
 if __name__ == "__main__":
     main()
