@@ -1,0 +1,19 @@
+
+// try statement for loading data
+# Disable foreign key checks temporarily
+        cursor.execute("SET FOREIGN_KEY_CHECKS=0;")
+
+        load_query = f"""
+        LOAD DATA LOCAL INFILE '{absolute_path}'
+        INTO TABLE {table_name}
+        FIELDS TERMINATED BY ',' 
+        LINES TERMINATED BY '\n' 
+        IGNORE 1 ROWS;
+        """
+
+        cursor.execute(load_query)
+
+        # Re-enable foreign key checks
+        cursor.execute("SET FOREIGN_KEY_CHECKS=1;")
+
+        print(f"Data from {absolute_path} loaded into {table_name}")
