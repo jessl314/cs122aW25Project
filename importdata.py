@@ -2,7 +2,7 @@ import os
 import csv
 import mysql.connector
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 # QUESTION: is it ok to lower all table names
 # NOTE: make sure to change the database name to cs122a before submission
