@@ -70,9 +70,9 @@ def main():
         leave_at = sys.argv[7]
         quality = sys.argv[8]
         device = sys.argv[9]
-        print("yes")
+       # print("yes")
         a.insert_session(sid, uid, rid, ep_num, initiate_at, leave_at, quality, device)
-        print("done")
+       # print("done")
     #7
     elif command == "updateRelease" and len(sys.argv) == 4:
         rid = sys.argv[2]

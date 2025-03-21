@@ -194,7 +194,7 @@ def list_releases(uid):
     Output:
 	    Table - rid, genre, title
     """
-    print("Hello")
+    #print("Hello")
     connection = i.create_connection()
     if not connection:
         return False
