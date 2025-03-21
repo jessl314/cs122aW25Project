@@ -10,6 +10,31 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     Output:
 	    Boolean
     """
+    if email == 'NULL':
+        email = None
+    if nickname == 'NULL':
+        nickname = None
+    if street == 'NULL':
+        street = None
+    if city == 'NULL':
+        city = None
+    if state == 'NULL':
+        state = None
+    if zip_code == 'NULL':
+        zip_code = None
+    if genres == 'NULL':
+        genres = None
+    if joined_date == 'NULL':
+        joined_date = None
+    if first == 'NULL':
+        first = None
+    if last == 'NULL':
+        last = None
+    if subscription == 'NULL':
+        subscription = None
+    if uid == 'NULL':
+        print("Fail")
+        return False
     connection = i.create_connection()
     if not connection:
         return False
@@ -37,6 +62,19 @@ def insert_session(sid, uid, rid, ep_num, initiate_at, leave_at, quality, device
     Output:
 	    Boolean
     """
+    if initiate_at == 'NULL':
+        initiate_at = None
+    if leave_at == 'NULL':
+        leave_at = None
+    if website_url == 'NULL':
+        website_url = None
+    if quality == 'NULL':
+        quality = None
+    if device == 'NULL':
+        device = None
+    if sid == 'NULL' or uid == "NULL" or rid == "NULL" or ep_num == "NULL":
+        print("Fail")
+        return False
     connection = i.create_connection()
     if not connection:
         return False
