@@ -35,10 +35,13 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     if uid == 'NULL':
         print("Fail")
         return False
+    
     connection = i.create_connection()
     if not connection:
+        print("Fail")
         return False
     cursor = connection.cursor()
+    
     try:
         cursor.execute("INSERT INTO users (uid, email, joined_date, nickname, street, city, state, zip, genres) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
                        (uid, email, joined_date, nickname, street, city, state, zip_code, genres))
