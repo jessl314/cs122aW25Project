@@ -92,13 +92,14 @@ def insert_session(sid, uid, rid, ep_num, initiate_at, leave_at, quality, device
     """
     Input:
         python3 project.py insertSession [sid:int] [uid:int] [rid:int] [ep_num:int] [initiate_at:datetime] [leave_at:datetime] [quality:str] [device:str] 
-        EXAMPLE: python3 project.py insertSession 1 2 102 4 "2025-01-10 13:10:10" "2025-01-10 15:02:45" 720p mobile
+        EXAMPLE: python project.py insertSession 1 2 102 4 "2025-01-10 13:10:10" "2025-01-10 15:02:45" 720p mobile
     Output:
         Boolean
     """
     if sid == 'NULL' or uid == "NULL" or rid == "NULL" or ep_num == "NULL":
         print("Fail")
         return False
+    
     
     # Handle NULL values
     if initiate_at == 'NULL':
@@ -193,6 +194,7 @@ def list_releases(uid):
     Output:
 	    Table - rid, genre, title
     """
+    print("Hello")
     connection = i.create_connection()
     if not connection:
         return False
@@ -212,9 +214,10 @@ def list_releases(uid):
             return True
         else:
             #print("No records found.")
+            #print("Fail")
             return False
     except mysql.connector.Error as err:
-        print("Fail")
+        #print("Fail")
         return False
     finally:
         cursor.close()

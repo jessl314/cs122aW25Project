@@ -36,6 +36,9 @@ def create_connection():
             user='test',
             password='password',
             database='cs122a',
+           # user='amratha',
+           # password='Akash13579!',
+           # database='ZotStreamingcs122a',
         )
         return connection
     except mysql.connector.Error as err:
