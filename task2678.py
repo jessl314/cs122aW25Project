@@ -48,11 +48,15 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
 
 
     try:
-        #both complete or non complete
         cursor.execute("START TRANSACTION")
         
-        cursor.execute("SELECT v.uid FROM viewers v LEFT JOIN users u ON v.uid = u.uid WHERE v.uid = %s AND u.uid IS NULL", (uid,))
-        if cursor.fetchone():
+        cursor.execute("SELECT COUNT(*) FROM viewers WHERE uid = %s", (uid,))
+        viewer_exists = cursor.fetchone()[0] > 0  # Check if viewer exists
+
+        cursor.execute("SELECT COUNT(*) FROM users WHERE uid = %s", (uid,))
+        user_exists = cursor.fetchone()[0] > 0  # Check if user exists
+
+        if viewer_exists and not user_exists:  # If the viewer exists but not in users, fail
             print("Fail")
             connection.rollback()
             return False
@@ -82,10 +86,8 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
         
         connection.commit()
         print ("Success")
-        print("Success" + uid + email + joined_date + nickname + street + city + state+ zip_code + genres + subscription + first + last)
         return True
     except mysql.connector.Error as err:
-        # Roll back in case of error
         connection.rollback()
         print("Fail")        
         return False
