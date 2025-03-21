@@ -48,6 +48,12 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     
     try:
         #both complete or non complete
+        
+        cursor.execute("SELECT uid FROM producers WHERE uid = %s", (uid,))
+        if cursor.fetchone():
+            print("Fail")  # User is already a producer, can't be a viewer
+            return False
+        
         cursor.execute("START TRANSACTION")
         
         cursor.execute("SELECT v.uid FROM viewers v LEFT JOIN users u ON v.uid = u.uid WHERE v.uid = %s AND u.uid IS NULL", (uid,))
