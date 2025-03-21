@@ -50,29 +50,29 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
         return False
     cursor = connection.cursor()
 
-    # cursor.execute("SELECT uid FROM users WHERE uid = %s", (uid,))
-    # if not cursor.fetchone():
-    #     print("Fail")
-    #     return False
+    cursor.execute("SELECT uid FROM users WHERE uid = %s", (uid,))
+    if not cursor.fetchone():
+        print("Fail")
+        return False
 
     try:
         # Start a transaction to ensure both inserts complete or none do
         cursor.execute("START TRANSACTION")
         
         # Insert or update the users table first
-        cursor.execute("""
-            INSERT INTO users (uid, email, joined_date, nickname, street, city, state, zip, genres) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-            ON DUPLICATE KEY UPDATE 
-                email = VALUES(email), 
-                joined_date = VALUES(joined_date), 
-                nickname = VALUES(nickname), 
-                street = VALUES(street), 
-                city = VALUES(city), 
-                state = VALUES(state), 
-                zip = VALUES(zip), 
-                genres = VALUES(genres);
-        """, (uid, email, joined_date, nickname, street, city, state, zip_code, genres))
+        # cursor.execute("""
+        #     INSERT INTO users (uid, email, joined_date, nickname, street, city, state, zip, genres)
+        #     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        #     ON DUPLICATE KEY UPDATE
+        #         email = VALUES(email),
+        #         joined_date = VALUES(joined_date),
+        #         nickname = VALUES(nickname),
+        #         street = VALUES(street),
+        #         city = VALUES(city),
+        #         state = VALUES(state),
+        #         zip = VALUES(zip),
+        #         genres = VALUES(genres);
+        # """, (uid, email, joined_date, nickname, street, city, state, zip_code, genres))
 
         # cursor.execute("SELECT uid FROM users WHERE uid = %s", (uid,))
         # if not cursor.fetchone():
