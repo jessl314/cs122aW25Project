@@ -50,6 +50,7 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
         return False
     cursor = connection.cursor()
 
+    #checking if uid exist
     cursor.execute("SELECT uid FROM users WHERE uid = %s", (uid,))
     if cursor.fetchone():
         print("Fail")
