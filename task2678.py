@@ -43,10 +43,29 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     cursor = connection.cursor()
     
     try:
-        cursor.execute("INSERT INTO users (uid, email, joined_date, nickname, street, city, state, zip, genres) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                       (uid, email, joined_date, nickname, street, city, state, zip_code, genres))
-        cursor.execute("INSERT INTO viewers (uid, subscription, first_name, last_name) VALUES (%s, %s, %s, %s)",
-                       (uid, subscription, first, last))
+        cursor.execute("""
+            INSERT INTO users (uid, email, joined_date, nickname, street, city, state, zip, genres) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON DUPLICATE KEY UPDATE 
+                email = VALUES(email), 
+                joined_date = VALUES(joined_date), 
+                nickname = VALUES(nickname), 
+                street = VALUES(street), 
+                city = VALUES(city), 
+                state = VALUES(state), 
+                zip = VALUES(zip), 
+                genres = VALUES(genres);
+        """, (uid, email, joined_date, nickname, street, city, state, zip_code, genres))
+
+        # Insert or update in `viewers` table
+        cursor.execute("""
+            INSERT INTO viewers (uid, subscription, first_name, last_name) 
+            VALUES (%s, %s, %s, %s)
+            ON DUPLICATE KEY UPDATE 
+                subscription = VALUES(subscription), 
+                first_name = VALUES(first_name), 
+                last_name = VALUES(last_name);
+        """, (uid, subscription, first, last))
         connection.commit()
         print("Success")
         return True
