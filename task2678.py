@@ -66,10 +66,10 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
                 genres = VALUES(genres);
         """, (uid, email, joined_date, nickname, street, city, state, zip_code, genres))
 
-        cursor.execute("SELECT uid FROM users WHERE uid = %s", (uid,))
-        if not cursor.fetchone():
-            print("Fail")
-            return False
+        # cursor.execute("SELECT uid FROM users WHERE uid = %s", (uid,))
+        # if not cursor.fetchone():
+        #     print("Fail")
+        #     return False
 
         # Then insert or update the viewers table
         cursor.execute("""
