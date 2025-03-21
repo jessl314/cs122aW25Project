@@ -1,6 +1,7 @@
 import sys
 import importdata as i
 import task345 as t
+import task2678 as a
 import last_tasks as b
 
 #het hi
@@ -44,6 +45,41 @@ def main():
     elif command == "videosViewed" and len(sys.argv) == 3:
         #python project.py videosViewed 123
         b.video_viewed(sys.argv[2])
+    #2
+    elif command == "insertViewer" and len(sys.argv) == 13:
+        uid = sys.argv[2]
+        email = sys.argv[3]
+        nickname = sys.argv[4]
+        street = sys.argv[5]
+        city = sys.argv[6]
+        state = sys.argv[7]
+        zip_code = sys.argv[8]
+        genres = sys.argv[9]
+        joined_date = sys.argv[10]
+        first = sys.argv[11]
+        last = sys.argv[12]
+        subscription = sys.argv[13]
+        a.insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, joined_date, first, last, subscription)
+    #6
+    elif command == "insertSession" and len(sys.argv) == 9:
+        sid = sys.argv[2]
+        uid = sys.argv[3]
+        rid = sys.argv[4]
+        ep_num = sys.argv[5]
+        initiate_at = sys.argv[6]
+        leave_at = sys.argv[7]
+        quality = sys.argv[8]
+        device = sys.argv[9]
+        a.insert_session(sid, uid, rid, ep_num, initiate_at, leave_at, quality, device)
+    #7
+    elif command == "updateRelease" and len(sys.argv) == 4:
+        rid = sys.argv[2]
+        title = sys.argv[3]
+        a.update_release(rid,title)
+    #8
+    elif command == "listReleases" and len(sys.argv) == 3:
+        uid = sys.argv[2]
+        a.list_releases(uid)
 
 #akl
 if __name__ == "__main__":
