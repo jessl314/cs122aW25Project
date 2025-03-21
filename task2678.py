@@ -9,6 +9,7 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     Output:
         Boolean
     """
+    uid = int(uid) if uid != 'NULL' else None
     if email == 'NULL':
         email = None
     if nickname == 'NULL':
@@ -36,16 +37,24 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
         if subscription and subscription not in valid:
             print("Fail")
             return False
-    if uid == 'NULL':
+    # if uid == 'NULL':
+    #     print("Fail")
+    #     return False
+    if not uid:
         print("Fail")
         return False
-    
+
     connection = i.create_connection()
     if not connection:
         print("Fail")
         return False
     cursor = connection.cursor()
 
+    #checking if uid exist
+    cursor.execute("SELECT uid FROM users WHERE uid = %s", (uid,))
+    if cursor.fetchone():
+        print("Fail")
+        return False
 
     try:
         cursor.execute("START TRANSACTION")
@@ -62,16 +71,16 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
             return False
         
         cursor.execute("""
-            INSERT INTO users (uid, email, joined_date, nickname, street, city, state, zip, genres) 
+            INSERT INTO users (uid, email, joined_date, nickname, street, city, state, zip, genres)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-            ON DUPLICATE KEY UPDATE 
-                email = VALUES(email), 
-                joined_date = VALUES(joined_date), 
-                nickname = VALUES(nickname), 
-                street = VALUES(street), 
-                city = VALUES(city), 
-                state = VALUES(state), 
-                zip = VALUES(zip), 
+            ON DUPLICATE KEY UPDATE
+                email = VALUES(email),
+                joined_date = VALUES(joined_date),
+                nickname = VALUES(nickname),
+                street = VALUES(street),
+                city = VALUES(city),
+                state = VALUES(state),
+                zip = VALUES(zip),
                 genres = VALUES(genres);
         """, (uid, email, joined_date, nickname, street, city, state, zip_code, genres))
 
