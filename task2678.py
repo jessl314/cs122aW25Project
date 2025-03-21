@@ -32,7 +32,7 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     if subscription == 'NULL':
         subscription = None
     else:
-        valid = {"yearly", "monthly", "weekly"} 
+        valid = {"free", "monthly", "yearly"}  
         if subscription and subscription not in valid:
             print("Fail")
             return False
@@ -47,6 +47,10 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     cursor = connection.cursor()
     
     try:
+        
+    #both insert statements run or none will execute
+        cursor.execute("START TRANSACTION")
+        
         cursor.execute("""
             INSERT INTO users (uid, email, joined_date, nickname, street, city, state, zip, genres) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -92,22 +96,46 @@ def insert_session(sid, uid, rid, ep_num, initiate_at, leave_at, quality, device
         initiate_at = None
     if leave_at == 'NULL':
         leave_at = None
-    if website_url == 'NULL':
-        website_url = None
     if quality == 'NULL':
         quality = None
+    else:
+        valid_q = {"480p", "720p", "1080p"}
+        if quality and quality not in valid_q:
+            print("Fail")
+            return False
     if device == 'NULL':
         device = None
+    else:
+        # Validate device values
+        valid_d = {"mobile", "desktop"}
+        if device and device not in valid_d:
+            print("Fail")
+            return False
     if sid == 'NULL' or uid == "NULL" or rid == "NULL" or ep_num == "NULL":
         print("Fail")
         return False
+    
     connection = i.create_connection()
     if not connection:
         return False
     cursor = connection.cursor()
     try:
-        cursor.execute("INSERT INTO sessions (sid, uid, rid, ep_num, initiate_at, leave_at, quality, device) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                       (sid, uid, rid, ep_num, initiate_at, leave_at, quality, device))
+        
+        cursor.execute("SELECT uid FROM viewers WHERE uid = %s", (uid,))
+        if not cursor.fetchone():
+            print("Fail")
+            return False
+            
+        cursor.execute("SELECT rid, ep_num FROM videos WHERE rid = %s AND ep_num = %s", (rid, ep_num))
+        if not cursor.fetchone():
+            print("Fail")
+            return False
+        
+        cursor.execute("""
+            INSERT INTO sessions (sid, uid, rid, ep_num, initiate_at, leave_at, quality, device) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """, (sid, uid, rid, ep_num, initiate_at, leave_at, quality, device))
+        
         connection.commit()
         print("Success")
         return True
