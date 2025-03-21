@@ -9,6 +9,7 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     Output:
         Boolean
     """
+    uid = int(uid) if uid != 'NULL' else None
     if email == 'NULL':
         email = None
     if nickname == 'NULL':
@@ -36,10 +37,13 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
         if subscription and subscription not in valid:
             print("Fail")
             return False
-    if uid == 'NULL':
+    # if uid == 'NULL':
+    #     print("Fail")
+    #     return False
+    if not uid:
         print("Fail")
         return False
-    
+
     connection = i.create_connection()
     if not connection:
         print("Fail")
