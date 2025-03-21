@@ -46,10 +46,6 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
         return False
     cursor = connection.cursor()
 
-    cursor.execute("SELECT uid FROM users WHERE uid = %s", (uid,))
-    if not cursor.fetchone():
-        print("Fail")
-        return False
 
     try:
         # Start a transaction to ensure both inserts complete or none do
@@ -69,6 +65,11 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
                 zip = VALUES(zip), 
                 genres = VALUES(genres);
         """, (uid, email, joined_date, nickname, street, city, state, zip_code, genres))
+
+        cursor.execute("SELECT uid FROM users WHERE uid = %s", (uid,))
+        if not cursor.fetchone():
+            print("Fail")
+            return False
 
         # Then insert or update the viewers table
         cursor.execute("""
