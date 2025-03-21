@@ -6,7 +6,6 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     Input:
         python3 project.py insertViewer [uid:int] [email:str] [nickname:str] [street:str] [city:str] [state:str] [zip:str] [genres:str] [joined_date:date] [first:str] [last:str] [subscription:str]
         EXAMPLE: python3 project.py insertViewer 1 test@uci.edu awong "1111 1st street" Irvine CA 92616 "romance;comedy" 2020-04-19 Alice Wong yearly
-        
     Output:
 	    Boolean
     """
@@ -32,6 +31,11 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
         last = None
     if subscription == 'NULL':
         subscription = None
+    else:
+        valid = {"yearly", "monthly", "weekly"} 
+        if subscription and subscription not in valid:
+            print("Fail")
+            return False
     if uid == 'NULL':
         print("Fail")
         return False
@@ -57,7 +61,6 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
                 genres = VALUES(genres);
         """, (uid, email, joined_date, nickname, street, city, state, zip_code, genres))
 
-        # Insert or update in `viewers` table
         cursor.execute("""
             INSERT INTO viewers (uid, subscription, first_name, last_name) 
             VALUES (%s, %s, %s, %s)
@@ -66,6 +69,7 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
                 first_name = VALUES(first_name), 
                 last_name = VALUES(last_name);
         """, (uid, subscription, first, last))
+        
         connection.commit()
         print("Success")
         return True
