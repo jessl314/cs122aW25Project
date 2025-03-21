@@ -45,7 +45,8 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
         print("Fail")
         return False
     cursor = connection.cursor()
-    
+
+
     try:
         #both complete or non complete
         cursor.execute("START TRANSACTION")
