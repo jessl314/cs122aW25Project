@@ -7,7 +7,7 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
         python3 project.py insertViewer [uid:int] [email:str] [nickname:str] [street:str] [city:str] [state:str] [zip:str] [genres:str] [joined_date:date] [first:str] [last:str] [subscription:str]
         EXAMPLE: python3 project.py insertViewer 1 test@uci.edu awong "1111 1st street" Irvine CA 92616 "romance;comedy" 2020-04-19 Alice Wong yearly
     Output:
-	    Boolean
+        Boolean
     """
     if email == 'NULL':
         email = None
@@ -32,7 +32,7 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     if subscription == 'NULL':
         subscription = None
     else:
-        valid = {"free", "monthly", "yearly"}  
+        valid = {"free", "monthly", "yearly"}  # Fixed valid subscription values
         if subscription and subscription not in valid:
             print("Fail")
             return False
@@ -47,10 +47,10 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     cursor = connection.cursor()
     
     try:
-        
-    #both insert statements run or none will execute
+        # Start a transaction to ensure both inserts complete or none do
         cursor.execute("START TRANSACTION")
         
+        # Insert or update the users table first
         cursor.execute("""
             INSERT INTO users (uid, email, joined_date, nickname, street, city, state, zip, genres) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -65,6 +65,7 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
                 genres = VALUES(genres);
         """, (uid, email, joined_date, nickname, street, city, state, zip_code, genres))
 
+        # Then insert or update the viewers table
         cursor.execute("""
             INSERT INTO viewers (uid, subscription, first_name, last_name) 
             VALUES (%s, %s, %s, %s)
@@ -74,10 +75,13 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
                 last_name = VALUES(last_name);
         """, (uid, subscription, first, last))
         
+        # Commit the transaction
         connection.commit()
         print("Success")
         return True
     except mysql.connector.Error as err:
+        # Roll back in case of error
+        connection.rollback()
         print("Fail")        
         return False
     finally:
@@ -88,10 +92,15 @@ def insert_session(sid, uid, rid, ep_num, initiate_at, leave_at, quality, device
     """
     Input:
         python3 project.py insertSession [sid:int] [uid:int] [rid:int] [ep_num:int] [initiate_at:datetime] [leave_at:datetime] [quality:str] [device:str] 
-        EXAMPLE: python3 project.py insertSession 1 2 102 4 “2025-01-10 13:10:10” “2025-01-10 15:02:45” 720p mobile
+        EXAMPLE: python3 project.py insertSession 1 2 102 4 "2025-01-10 13:10:10" "2025-01-10 15:02:45" 720p mobile
     Output:
-	    Boolean
+        Boolean
     """
+    if sid == 'NULL' or uid == "NULL" or rid == "NULL" or ep_num == "NULL":
+        print("Fail")
+        return False
+    
+    # Handle NULL values
     if initiate_at == 'NULL':
         initiate_at = None
     if leave_at == 'NULL':
@@ -99,38 +108,41 @@ def insert_session(sid, uid, rid, ep_num, initiate_at, leave_at, quality, device
     if quality == 'NULL':
         quality = None
     else:
-        valid_q = {"480p", "720p", "1080p"}
-        if quality and quality not in valid_q:
+        # Validate quality values
+        valid_quality = {"480p", "720p", "1080p"}
+        if quality and quality not in valid_quality:
             print("Fail")
             return False
+            
     if device == 'NULL':
         device = None
     else:
         # Validate device values
-        valid_d = {"mobile", "desktop"}
-        if device and device not in valid_d:
+        valid_device = {"mobile", "desktop"}
+        if device and device not in valid_device:
             print("Fail")
             return False
-    if sid == 'NULL' or uid == "NULL" or rid == "NULL" or ep_num == "NULL":
-        print("Fail")
-        return False
     
     connection = i.create_connection()
     if not connection:
+        print("Fail")
         return False
     cursor = connection.cursor()
+    
     try:
-        
+        # Check if the referenced viewer exists
         cursor.execute("SELECT uid FROM viewers WHERE uid = %s", (uid,))
         if not cursor.fetchone():
             print("Fail")
             return False
             
+        # Check if the referenced video exists
         cursor.execute("SELECT rid, ep_num FROM videos WHERE rid = %s AND ep_num = %s", (rid, ep_num))
         if not cursor.fetchone():
             print("Fail")
             return False
         
+        # Insert the session
         cursor.execute("""
             INSERT INTO sessions (sid, uid, rid, ep_num, initiate_at, leave_at, quality, device) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
