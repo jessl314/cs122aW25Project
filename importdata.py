@@ -37,7 +37,7 @@ def create_connection():
             password='password',
             database='cs122a',
            # user='amratha',
-           # password='Akash13579!',
+            #password='Akash13579!',
            # database='ZotStreamingcs122a',
         )
         return connection

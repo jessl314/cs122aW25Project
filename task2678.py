@@ -5,7 +5,7 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     """
     Input:
         python3 project.py insertViewer [uid:int] [email:str] [nickname:str] [street:str] [city:str] [state:str] [zip:str] [genres:str] [joined_date:date] [first:str] [last:str] [subscription:str]
-        EXAMPLE: python3 project.py insertViewer 1 test@uci.edu awong "1111 1st street" Irvine CA 92616 "romance;comedy" 2020-04-19 Alice Wong yearly
+        EXAMPLE: python project.py insertViewer 1 test@uci.edu awong "1111 1st street" Irvine CA 92616 "romance;comedy" 2020-04-19 Alice Wong yearly
     Output:
         Boolean
     """
@@ -32,7 +32,7 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     if subscription == 'NULL':
         subscription = None
     else:
-        valid = {"free", "monthly", "yearly"}  # Fixed valid subscription values
+        valid = {"free", "monthly", "yearly"}  
         if subscription and subscription not in valid:
             print("Fail")
             return False
@@ -47,10 +47,15 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
     cursor = connection.cursor()
     
     try:
-        # Start a transaction to ensure both inserts complete or none do
+        #both complete or non complete
         cursor.execute("START TRANSACTION")
         
-        # Insert or update the users table first
+        cursor.execute("SELECT v.uid FROM viewers v LEFT JOIN users u ON v.uid = u.uid WHERE v.uid = %s AND u.uid IS NULL", (uid,))
+        if cursor.fetchone():
+            print("Fail")
+            connection.rollback()
+            return False
+        
         cursor.execute("""
             INSERT INTO users (uid, email, joined_date, nickname, street, city, state, zip, genres) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -65,7 +70,6 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
                 genres = VALUES(genres);
         """, (uid, email, joined_date, nickname, street, city, state, zip_code, genres))
 
-        # Then insert or update the viewers table
         cursor.execute("""
             INSERT INTO viewers (uid, subscription, first_name, last_name) 
             VALUES (%s, %s, %s, %s)
@@ -75,9 +79,9 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
                 last_name = VALUES(last_name);
         """, (uid, subscription, first, last))
         
-        # Commit the transaction
         connection.commit()
-        print("Success")
+        print ("Success")
+        print("Success" + uid + email + joined_date + nickname + street + city + state+ zip_code + genres + subscription + first + last)
         return True
     except mysql.connector.Error as err:
         # Roll back in case of error
