@@ -46,7 +46,7 @@ def main():
         #python project.py videosViewed 123
         b.video_viewed(sys.argv[2])
     #2
-    elif command == "insertViewer" and len(sys.argv) == 13:
+    elif command == "insertViewer" and len(sys.argv) == 14:
         uid = sys.argv[2]
         email = sys.argv[3]
         nickname = sys.argv[4]
@@ -61,7 +61,7 @@ def main():
         subscription = sys.argv[13]
         a.insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, joined_date, first, last, subscription)
     #6
-    elif command == "insertSession" and len(sys.argv) == 9:
+    elif command == "insertSession" and len(sys.argv) == 10:
         sid = sys.argv[2]
         uid = sys.argv[3]
         rid = sys.argv[4]
@@ -70,7 +70,9 @@ def main():
         leave_at = sys.argv[7]
         quality = sys.argv[8]
         device = sys.argv[9]
+        print("yes")
         a.insert_session(sid, uid, rid, ep_num, initiate_at, leave_at, quality, device)
+        print("done")
     #7
     elif command == "updateRelease" and len(sys.argv) == 4:
         rid = sys.argv[2]
@@ -80,6 +82,8 @@ def main():
     elif command == "listReleases" and len(sys.argv) == 3:
         uid = sys.argv[2]
         a.list_releases(uid)
+    else:
+        print(len(sys.argv))
 
 #akl
 if __name__ == "__main__":
