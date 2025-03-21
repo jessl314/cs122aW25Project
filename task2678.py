@@ -60,12 +60,12 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
         cursor.execute("START TRANSACTION")
         
         cursor.execute("SELECT COUNT(*) FROM viewers WHERE uid = %s", (uid,))
-        viewer_exists = cursor.fetchone()[0] > 0  # Check if viewer exists
+        viewer_exists = cursor.fetchone()[0] > 0  
 
         cursor.execute("SELECT COUNT(*) FROM users WHERE uid = %s", (uid,))
-        user_exists = cursor.fetchone()[0] > 0  # Check if user exists
+        user_exists = cursor.fetchone()[0] > 0  
 
-        if viewer_exists and not user_exists:  # If the viewer exists but not in users, fail
+        if viewer_exists and not user_exists:  
             print("Fail")
             connection.rollback()
             return False
