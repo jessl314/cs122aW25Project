@@ -45,7 +45,12 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
         print("Fail")
         return False
     cursor = connection.cursor()
-    
+
+    cursor.execute("SELECT uid FROM users WHERE uid = %s", (uid,))
+    if not cursor.fetchone():
+        print("Fail")
+        return False
+
     try:
         # Start a transaction to ensure both inserts complete or none do
         cursor.execute("START TRANSACTION")
