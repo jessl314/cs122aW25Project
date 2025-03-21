@@ -145,7 +145,7 @@ def list_releases(uid):
                 print(",".join(str(col) for col in row))
             return True
         else:
-            print("No records found.")
+            #print("No records found.")
             return False
     except mysql.connector.Error as err:
         print("Fail")
