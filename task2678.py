@@ -85,6 +85,7 @@ def insert_viewer(uid, email, nickname, street, city, state, zip_code, genres, j
         """, (uid, subscription, first, last))
         
         connection.commit()
+        
         print ("Success")
         return True
     except mysql.connector.Error as err:
